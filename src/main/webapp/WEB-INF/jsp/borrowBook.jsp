@@ -3,9 +3,6 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%-- Build a context-safe URL like /myapp/library/borrowBook/{id} --%>
-<c:url var="borrowUrl" value="/library/borrowBook/${book.id}" />
-
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -48,10 +45,17 @@
       display:flex; align-items:center; justify-content:space-between;
     }
     h1{ margin:0; font-size:22px; letter-spacing:.2px; }
-    .status{ font-size:12px; color:var(--muted); }
+    .status{
+      font-size:12px; color:var(--muted);
+    }
     .badge{
-      display:inline-block; padding:4px 8px; border-radius:999px;
-      font-size:12px; border:1px solid var(--border); color:var(--muted); background:#fff;
+      display:inline-block;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid var(--border);
+      color:var(--muted);
+      background:#fff;
     }
     .card-body{ padding:22px; }
 
@@ -96,7 +100,6 @@
       outline:none;
       transition:border .15s ease, box-shadow .15s ease, background .15s ease;
     }
-    input[type="number"]::placeholder{ color:#cbd5e1; }
     input[type="number"]:hover{ background:#fafafa; }
     input[type="number"]:focus{
       border-color: var(--accent);
@@ -136,12 +139,7 @@
     </div>
 
     <div class="card-body">
-      <form:form method="post" action="${borrowUrl}" novalidate>
-        <%-- Include CSRF token if Spring Security is active (no-op otherwise) --%>
-        <c:if test="${not empty _csrf}">
-          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-        </c:if>
-
+      <form:form method="post" action="/library/borrowBook/${book.id}">
         <table>
           <thead>
             <tr>
@@ -166,16 +164,7 @@
         <div class="form-row">
           <div>
             <label for="days">Borrow Days</label>
-            <input
-              type="number"
-              id="days"
-              name="days"
-              min="1"
-              step="1"
-              placeholder="e.g., 7"
-              value="${param.days}"
-              required
-            />
+            <input type="number" id="days" name="days" min="1" step="1" placeholder="e.g., 7" required />
             <div class="hint">Enter how many days you want to borrow (minimum 1).</div>
           </div>
 
